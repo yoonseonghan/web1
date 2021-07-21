@@ -12,7 +12,7 @@
         <a href="3.html" target=""><li>좌 우측 DB데이터 출력 테이블 설계</li></a> 
         <a href="kapia.html" target=""><li>kakao api</li></a> </ol> -->
 
-<div id="map" style="width:100%;height:500px;"></div>
+<div id="map" style="width:100%;height:400px;"></div>
 <p id="result"></p>
   
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d5da5410ccce67dfa41cf70d49c80ac"></script>
@@ -30,8 +30,8 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     // 클릭한 위도, 경도 정보를 가져옵니다 
     var latlng = mouseEvent.latLng;
     
-    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-    message += '경도는 ' + latlng.getLng() + ' 입니다';
+    var message = 'X축 값 = ' + latlng.getLat() + ', ';
+    message += 'Y축 값 =' + latlng.getLng() + '';
     
     var resultDiv = document.getElementById('result'); 
     resultDiv.innerHTML = message;
