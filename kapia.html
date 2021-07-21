@@ -13,7 +13,8 @@
         <a href="kapia.html" target=""><li>kakao api</li></a> </ol> -->
 
 <div id="map" style="width:100%;height:500px;"></div>
-    
+<p id="result"></p>
+  
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d5da5410ccce67dfa41cf70d49c80ac"></script>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -23,6 +24,19 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     };
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng;
+    
+    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+    message += '경도는 ' + latlng.getLng() + ' 입니다';
+    
+    var resultDiv = document.getElementById('result'); 
+    resultDiv.innerHTML = message;
+    
+});
 
 // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
 var mapTypeControl = new kakao.maps.MapTypeControl();
