@@ -39,8 +39,8 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     var latlng = mouseEvent.latLng;
     marker.setPosition(latlng);
     
-    var message = 'X축 값 = ' + latlng.getLat() + ', ';
-    message += 'Y축 값 =' + latlng.getLng() + '';
+    var message = '위도 값 = ' + latlng.getLat() + ', ';
+    message += ' 값 =' + latlng.getLng() + '';
     
     var resultDiv = document.getElementById('result'); 
     resultDiv.innerHTML = message;
