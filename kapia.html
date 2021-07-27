@@ -12,7 +12,7 @@
         <a href="3.html" target=""><li>좌 우측 DB데이터 출력 테이블 설계</li></a> 
         <a href="kapia.html" target=""><li>kakao api</li></a> </ol> -->
 
-<div id="map" style="width:100%;height:400px;"></div>
+<div id="map" style="width:100%;height:500px;"></div>
 <p id="result"></p>
   
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7d5da5410ccce67dfa41cf70d49c80ac"></script>
@@ -20,7 +20,7 @@
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new kakao.maps.LatLng(35.835920, 128.54176289), // 지도의 중심좌표
-        level: 1 // 지도의 확대 레벨
+        level: 11 // 지도의 확대 레벨
     };
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
