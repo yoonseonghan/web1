@@ -6,8 +6,8 @@
     
 </head>
 <body>
-  <h1><a href="index.html">해양 경찰 재난 상황판 Test 용</a></h1> 
- <!--      <ol> <a href="1.html" target=""><li>이것은 예시용</li></a> 
+   <!--  <h1><a href="index.html">해양 경찰 재난 상황판 Test 용</a></h1> 
+        <ol> <a href="1.html" target=""><li>이것은 예시용</li></a> 
         <a href="2.html" target=""><li>클릭 시 정보 전달부분 생각</li></a> 
         <a href="3.html" target=""><li>좌 우측 DB데이터 출력 테이블 설계</li></a> 
         <a href="kapia.html" target=""><li>kakao api</li></a> </ol> -->
@@ -73,6 +73,12 @@ map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 var zoomControl = new kakao.maps.ZoomControl();
 map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
+// 마커에 클릭이벤트를 등록합니다
+kakao.maps.event.addListener(marker, 'click', function() {
+      // 마커 위에 인포윈도우를 표시합니다
+      infowindow.open(map, marker);  
+});
+    
 function getInfo() {
     // 지도의 현재 중심좌표를 얻어옵니다 
     var center = map.getCenter(); 
