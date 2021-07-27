@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<style type="text/css">
+    html, body {
+        width: 99%;
+        height: 98%;
+    }
+    .info {
+        
+        
+        padding: 5px;
+        font-weight: bold;
+        align-items: center;
+    }
+    #map{
+        position: absolute;
+        z-index:0;
+    }
+    .test{
+        position:absolute;
+        top:50%;
+        left:50%;
+        height:300px;
+        width:400px;
+        margin: -150px 0px 0px -200px;
+        z-index:1;
+        background:white;
+    }
+</style>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>지도 생성하기</title>
+</head>
+<body>
+    <div id="map" style="width:100%; height:100%; "></div>
+    <div class="test"> HIHI </div>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f4886b42ab4ed72181f7a6fdc22d2a48&libraries=services"></script>
+    <script>
+        //지도 생성
+        var mapContainer = document.getElementById('map'), mapOption = { center: new kakao.maps.LatLng(33.450701, 126.570667), level: 4 };
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        //zoom control 생성
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+        //재난 마커 이미지
+        var acc_imageSrc = 'acc3.png', // 마커이미지의 주소입니다
+            ship_imageSrc = 'ship1.png',
+            acc_imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+            acc_imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+        var acc_markerImage = new kakao.maps.MarkerImage(acc_imageSrc, acc_imageSize, acc_imageOption);
+        var ship_markerImage = new kakao.maps.MarkerImage(ship_imageSrc, acc_imageSize, acc_imageOption);
+
+        // 재난,선박 마커 배열
+        let acc_markers = [];
+        let ship_markers = [];
+        let accs = [];
+
+
+        // 재난 마커를 생성합니다
+        function makeAccMarker(lat, lng) {
+            acc_markerPosition = new kakao.maps.LatLng(lat, lng);
+            var marker = new kakao.maps.Marker({
+                position: acc_markerPosition,
+                image: acc_markerImage // 마커이미지 설정
+            });
+            return marker;
+        };
+        // 선박 마커를 생성합니다.
+        function makeShipMarker(lat, lng) {
+            ship_markerPosition = new kakao.maps.LatLng(lat, lng);
+            var marker = new kakao.maps.Marker({
+                position: ship_markerPosition,
+                image: ship_markerImage // 마커이미지 설정
+            });
+            return marker;
+        };
+
+        function makeMarker(lat, lng, type) {
+            if (type == 'acc') {
+                let marker = makeAccMarker(lat, lng);
+                marker.setMap(map);
+                acc_markers.push(marker);
+                return marker;
+            } else if (type == 'ship') {
+                let marker = makeShipMarker(lat, lng);
+                marker.setMap(map);
+                ship_markers.push(marker);
+                return marker;
+            }
+        };
+
+        class SHIP {
+            constructor(lat, lng, number, status) {
+                this.iwContent = '<div class=info>' + number + '<br>' + status + '</div>'
+                this.iwPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+                this.marker = makeMarker(lat, lng, 'ship');
+                this.infowindow = new kakao.maps.InfoWindow({
+                    position: this.iwPosition,
+                    content: this.iwContent
+                });
+
+                this.infowindow.open(map, this.marker);
+
+            }
+            change() {
+                this.infowindow.open(map, this.marker);
+            }
+
+        }
+
+        class ACC {
+            constructor(lat, lng, id) {
+                this.id = id;
+                this.marker = makeMarker(lat, lng, 'acc');
+            }
+
+        }
+
+
+        let acc = new ACC(33.450701, 126.570667, '123');
+        makeMarker(33.450701, 126.569, 'ship');
+        let ship = new SHIP(33.449, 126.570667, '303항', '현장 출동');
+        //makeMarker(33.449, 126.570667, 'ship');
+        //marker.setPosition(new kakao.maps.LatLng(33.450701, 126.570));
+        ship.marker.setPosition(new kakao.maps.LatLng(33.449, 126.569));
+        ship.change();
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function moveTo(lat, lng) {
+            var loc = new kakao.maps.LatLng(lat, lng);
+            map.setCenter(loc);
+        }
+
+        function panTo(lat, lng) {
+            var loc = new kakao.maps.LatLng(lat, lng);
+            map.panTo(loc);
+        }
+
+        function zoomIn() {
+            var level = map.getLevel();
+            map.setLevel(level - 1);
+        }
+
+        function zoomOut() {
+            var level = map.getLevel();
+            map.setLevel(level + 1);
+        }
+
+
+
+        function geo(address) {  // "송파구 가락동 10-1", "동남로 12길" 형태.
+            var geocoder = new kakao.maps.services.Geocoder();
+            geocoder.addressSearch(address, function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    var marker = new kakao.maps.Marker({ map: map, position: coords });
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">여기!!</div>'
+                    });
+                    infowindow.open(map, marker);
+                    map.setCenter(coords);
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
